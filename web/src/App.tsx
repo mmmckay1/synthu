@@ -3,6 +3,7 @@ import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
+import { funcTest } from '@synthu/shared'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -15,6 +16,7 @@ function App() {
           <img src={reactLogo} className="framework" alt="React logo" />
           <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
+        <p>{funcTest("Fletch").message}</p>
         <div>
           <h1>Get started</h1>
           <p>
@@ -118,5 +120,7 @@ function App() {
     </>
   )
 }
+
+
 
 export default App
