@@ -1,3 +1,5 @@
+export * from "./patch.js";
+
 export type Test = {
     message: string
 }
@@ -10,3 +12,4 @@ export function funcTest(name: string): Test{
     return {message: `${name}, this is a test`
 };
 }
+

@@ -19,3 +19,7 @@ export const PatchSchema = z.strictObject({
     filterCutoff: z.number().min(20).max(20000),
     filterResonance: z.number().min(0).max(1)
 })
+
+export type Patch = z.infer<typeof PatchSchema>;
+export type Waveform = z.infer<typeof WaveformSchema>;
+export type FilterType = z.infer<typeof FilterTypeSchema>;
