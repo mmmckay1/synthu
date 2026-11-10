@@ -23,3 +23,20 @@ export const PatchSchema = z.strictObject({
 export type Patch = z.infer<typeof PatchSchema>;
 export type Waveform = z.infer<typeof WaveformSchema>;
 export type FilterType = z.infer<typeof FilterTypeSchema>;
+
+export const DEFAULT_PATCH: Patch = {
+    osc1Waveform: "sine",
+    osc2Waveform: "sine",
+    osc1Mix: 1,
+    osc2Mix: 0,
+    osc2Detune: 0,
+    osc1Octave: 0,
+    osc2Octave: 0,
+    ampAttack: 1,
+    ampDecay: 600,
+    ampSustain: 0.8,
+    ampRelease: 50,
+    filterType: "none",
+    filterResonance: 0,
+    filterCutoff: 20000
+}
