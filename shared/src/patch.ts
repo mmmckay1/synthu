@@ -32,7 +32,7 @@ export const DEFAULT_PATCH: Patch = {
     osc2Detune: 0,
     osc1Octave: 0,
     osc2Octave: 0,
-    ampAttack: 20,
+    ampAttack: 5,
     ampDecay: 600,
     ampSustain: 0.8,
     ampRelease: 50,
