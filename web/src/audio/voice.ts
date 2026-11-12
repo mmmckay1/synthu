@@ -30,8 +30,9 @@ export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
 
     osc1.type = patch.osc1Waveform
     osc2.type = patch.osc2Waveform
-    osc1.frequency.value = freq
-    osc2.frequency.value = freq
+    osc1.frequency.value = freq * (2**(patch.osc1Octave))
+    osc2.frequency.value = (freq * (2**(patch.osc2Octave)))
+    osc2.detune.value = patch.osc2Detune
 
     amp.gain.setValueAtTime(0, now)
     amp.gain.linearRampToValueAtTime(1, now + attackSec)

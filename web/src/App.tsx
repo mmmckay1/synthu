@@ -7,21 +7,9 @@ function App() {
   const practiceBeep = async() =>{
     const ctx = getAudioContext()
     await ctx.resume()
-    // const now = ctx.currentTime
-
-    // const buttonOsc = ctx.createOscillator()
-    // const gainNode = ctx.createGain()
-    // const now = ctx.currentTime
-    // buttonOsc.connect(gainNode)
-    // buttonOsc.frequency.value = 400
-    // gainNode.connect(ctx.destination)
-    // buttonOsc.start(now)
-
-    // gainNode.gain.setValueAtTime(0, now)
-    // gainNode.gain.linearRampToValueAtTime(1, now + 0.01)
-    // gainNode.gain.linearRampToValueAtTime(0, now + 0.5)
+ 
     const testPatch: Patch = {
-      ...DEFAULT_PATCH, osc2Mix: 0.5, osc2Waveform: "sawtooth"
+      ...DEFAULT_PATCH, osc2Mix: 0.5, osc2Waveform: "sawtooth", osc2Detune: 9, osc2Octave: -1, osc1Octave: -1, osc1Waveform: "sawtooth"
     }
     const voice = noteOn(ctx, testPatch, 600)
     setTimeout(() => {
@@ -30,7 +18,7 @@ function App() {
   }
   return (
     <>
-      <p>{DEFAULT_PATCH.osc1Waveform}</p>
+      <p>You can do it buddy! -Mama, Froggie, Binky, Minky</p>
       <button onClick={practiceBeep}>test beep</button>
 
     </>
