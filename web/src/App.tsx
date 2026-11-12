@@ -1,4 +1,4 @@
-import { DEFAULT_PATCH } from '@synthu/shared'
+import { DEFAULT_PATCH, type Patch } from '@synthu/shared'
 import { getAudioContext } from './audio/context.ts'
 import { noteOff, noteOn } from './audio/voice.ts'
 
@@ -20,9 +20,12 @@ function App() {
     // gainNode.gain.setValueAtTime(0, now)
     // gainNode.gain.linearRampToValueAtTime(1, now + 0.01)
     // gainNode.gain.linearRampToValueAtTime(0, now + 0.5)
-    const voice = noteOn(ctx, DEFAULT_PATCH, 600)
+    const testPatch: Patch = {
+      ...DEFAULT_PATCH, osc2Mix: 0.5, osc2Waveform: "sawtooth"
+    }
+    const voice = noteOn(ctx, testPatch, 600)
     setTimeout(() => {
-      noteOff(ctx, voice, DEFAULT_PATCH)
+      noteOff(ctx, voice, testPatch)
     }, 1000);
   }
   return (
