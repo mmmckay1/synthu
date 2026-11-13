@@ -1,11 +1,12 @@
 import type { FilterType, Patch } from "@synthu/shared"
 
 export type Voice = {
-    osc1: OscillatorNode,
-    osc2: OscillatorNode,
-    gain1: GainNode,
-    gain2: GainNode,
-    filter: BiquadFilterNode,
+    freq: number
+    osc1: OscillatorNode
+    osc2: OscillatorNode
+    gain1: GainNode
+    gain2: GainNode
+    filter: BiquadFilterNode
     amp: GainNode
 }
 
@@ -19,6 +20,18 @@ function resonanceToQ(resonance: number, type: FilterType): number{
         case "none":
             return 1
     }
+}
+
+export function updateVoice(ctx: AudioContext, voice: Voice, patch: Patch): void{
+    const now = ctx.currentTime
+    const smooth = 0.01
+    voice.gain1.gain.setTargetAtTime(patch.osc1Mix, now, smooth)
+    voice.gain2.gain.setTargetAtTime(patch.osc2Mix, now, smooth)
+    voice.osc1.frequency.setTargetAtTime(voice.freq*2**patch.osc1Octave, now, smooth)
+    voice.osc2.frequency.setTargetAtTime(voice.freq*2**patch.osc2Octave, now, smooth)
+    voice.osc2.detune.setTargetAtTime(patch.osc2Detune, now, smooth)
+    voice.filter.Q.setTargetAtTime(patch.filterResonance, now, smooth)
+    voice.filter.frequency.setTargetAtTime(patch.filterCutoff, now, smooth)
 }
 
 export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
@@ -58,7 +71,7 @@ export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
 
     osc1.start(now)
     osc2.start(now)
-    return { osc1, osc2, gain1, gain2, filter, amp}
+    return { osc1, osc2, gain1, gain2, filter, amp, freq}
 }
 
 export function noteOff(ctx: AudioContext, voice: Voice, patch: Patch): void {
