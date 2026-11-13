@@ -33,6 +33,10 @@ export function updateVoice(ctx: AudioContext, voice: Voice, patch: Patch): void
     voice.osc2.detune.setTargetAtTime(patch.osc2Detune, now, smooth)
     voice.filter.Q.setTargetAtTime(resonanceToQ(patch.filterResonance, patch.filterType), now, smooth)
     voice.filter.frequency.setTargetAtTime(patch.filterCutoff, now, smooth)
+
+    voice.osc1.type = patch.osc1Waveform
+    voice.osc2.type = patch.osc2Waveform
+    voice.filter.type = patch. filterType === "none" ? "allpass": patch.filterType
 }
 
 export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {

@@ -16,7 +16,7 @@ function App() {
 
     const nextPatch: Patch ={
       ...DEFAULT_PATCH, osc2Mix: 0.2, osc2Waveform: "sawtooth", osc2Detune: 20, osc1Mix: 0.5,
-      osc2Octave: -2, osc1Octave: -1, osc1Waveform: "sawtooth", filterCutoff: 1000, filterType: 'lowpass',
+      osc2Octave: -2, osc1Octave: -1, osc1Waveform: "square", filterCutoff: 1000, filterType: 'highpass',
       filterResonance: 1
     }
     const voice = noteOn(ctx, testPatch, 600)
