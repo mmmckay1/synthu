@@ -10,7 +10,8 @@ function App() {
  
     const testPatch: Patch = {
       ...DEFAULT_PATCH, osc2Mix: 0.5, osc2Waveform: "sawtooth", osc2Detune: 9, 
-      osc2Octave: -1, osc1Octave: -1, osc1Waveform: "sawtooth", filterCutoff: 1300, filterType: 'lowpass'
+      osc2Octave: -1, osc1Octave: -1, osc1Waveform: "sawtooth", filterCutoff: 1300, filterType: 'lowpass',
+      filterResonance: 1
     }
     const voice = noteOn(ctx, testPatch, 600)
     setTimeout(() => {
