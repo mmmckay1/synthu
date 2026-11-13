@@ -1,6 +1,7 @@
 import { DEFAULT_PATCH, type Patch } from '@synthu/shared'
 import { getAudioContext } from './audio/context.ts'
 import { noteOff, noteOn, updateVoice } from './audio/voice.ts'
+import Freeplay from './Freeplay.tsx'
 
 function App() {
 
@@ -26,8 +27,9 @@ function App() {
 
   return (
     <>
-      <p>You can do it buddy! -Mama, Froggie, Binky, Minky</p>
+      <p>You can do it tootall! -Mama, Froggie, Binky, Minky</p>
       <button onClick={practiceBeep}>test beep</button>
+      <Freeplay />
 
     </>
   )
