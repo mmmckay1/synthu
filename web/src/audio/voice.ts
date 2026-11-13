@@ -25,12 +25,13 @@ function resonanceToQ(resonance: number, type: FilterType): number{
 export function updateVoice(ctx: AudioContext, voice: Voice, patch: Patch): void{
     const now = ctx.currentTime
     const smooth = 0.01
+
     voice.gain1.gain.setTargetAtTime(patch.osc1Mix, now, smooth)
     voice.gain2.gain.setTargetAtTime(patch.osc2Mix, now, smooth)
     voice.osc1.frequency.setTargetAtTime(voice.freq*2**patch.osc1Octave, now, smooth)
     voice.osc2.frequency.setTargetAtTime(voice.freq*2**patch.osc2Octave, now, smooth)
     voice.osc2.detune.setTargetAtTime(patch.osc2Detune, now, smooth)
-    voice.filter.Q.setTargetAtTime(patch.filterResonance, now, smooth)
+    voice.filter.Q.setTargetAtTime(resonanceToQ(patch.filterResonance, patch.filterType), now, smooth)
     voice.filter.frequency.setTargetAtTime(patch.filterCutoff, now, smooth)
 }
 
