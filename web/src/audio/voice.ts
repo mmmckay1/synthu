@@ -5,6 +5,7 @@ export type Voice = {
     osc2: OscillatorNode,
     gain1: GainNode,
     gain2: GainNode,
+    filter: BiquadFilterNode,
     amp: GainNode
 }
 
@@ -17,22 +18,26 @@ export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
     const osc2 = ctx.createOscillator()
     const gain1 = ctx.createGain()
     const gain2 = ctx.createGain()
+    const filter = ctx.createBiquadFilter()
+    const amp = ctx.createGain()
 
-    gain1.gain.value = (patch.osc1Mix)
-    gain2.gain.value = (patch.osc2Mix)
     osc1.connect(gain1)
     osc2.connect(gain2)
-
-    const amp = ctx.createGain()
-    gain1.connect(amp)
-    gain2.connect(amp)
+    gain1.connect(filter)
+    gain2.connect(filter)
+    filter.connect(amp)
     amp.connect(ctx.destination)
 
+    
     osc1.type = patch.osc1Waveform
     osc2.type = patch.osc2Waveform
     osc1.frequency.value = freq * (2**(patch.osc1Octave))
     osc2.frequency.value = (freq * (2**(patch.osc2Octave)))
     osc2.detune.value = patch.osc2Detune
+    gain1.gain.value = (patch.osc1Mix)
+    gain2.gain.value = (patch.osc2Mix)
+    filter.frequency.value = (patch.filterCutoff)
+    filter.type = (patch.filterType) === 'none' ? 'allpass' : patch.filterType
 
     amp.gain.setValueAtTime(0, now)
     amp.gain.linearRampToValueAtTime(1, now + attackSec)
@@ -40,7 +45,7 @@ export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
 
     osc1.start(now)
     osc2.start(now)
-    return { osc1, osc2, gain1, gain2, amp}
+    return { osc1, osc2, gain1, gain2, filter, amp}
 }
 
 export function noteOff(ctx: AudioContext, voice: Voice, patch: Patch): void {
