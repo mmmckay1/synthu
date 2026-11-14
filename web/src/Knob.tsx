@@ -31,8 +31,8 @@ export default function Knob ({ label, position, display, onChange}: KnobProps){
         return(
             <div>
                 <svg width={56} height={56} viewBox="0 0 100 100" onPointerUp={handlePointerUp} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} style={{ touchAction: "none", cursor: "ns-resize"}}>
-                    <circle cx={50} cy={50} r={40} fill="blue" stroke="red" />
-                    <line x1={50} y1={50} x2={50} y2={14} stroke="red" strokeWidth={6} strokeLinecap="round" transform={`rotate(${angle} 50 50)`}/>
+                    <circle cx={50} cy={50} r={40} fill="#E3DAC9"/>
+                    <line x1={50} y1={50} x2={50} y2={14} stroke="#9b3b38" strokeWidth={6} strokeLinecap="round" transform={`rotate(${angle} 50 50)`}/>
                 </svg>
                 <div>{label}</div>
                 <div>{display}</div>
