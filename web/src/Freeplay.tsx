@@ -29,8 +29,8 @@ export default function Freeplay(){
         voiceRef.current = null
     }
 
-    const handleCutoff = (e: React.ChangeEvent<HTMLInputElement>) =>{
-        const filterCut = positionToCutoff(e.target.valueAsNumber)
+    const handleCutoff = (position: number) =>{
+        const filterCut = positionToCutoff(position)
         const next = {...patch, filterCutoff: filterCut}
         setPatch(next)
         if (voiceRef.current){
@@ -65,7 +65,7 @@ export default function Freeplay(){
 
     return (<>
     <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
-    <input type="range" min={0} max={1} step={0.001} value={cutoffToPosition(patch.filterCutoff)} onChange={handleCutoff} />
-    {Math.round(patch.filterCutoff)} Hz 
-    <Knob label="Cutoff" position={cutoffToPosition(patch.filterCutoff)} display={ `${Math.round(patch.filterCutoff)} Hz`} onChange={(p) => console.log(p)}/>
+    {/* <input type="range" min={0} max={1} step={0.001} value={cutoffToPosition(patch.filterCutoff)} onChange={handleCutoff} />
+    {Math.round(patch.filterCutoff)} Hz  */}
+    <Knob label="Cutoff" position={cutoffToPosition(patch.filterCutoff)} display={ `${Math.round(patch.filterCutoff)} Hz`} onChange={handleCutoff}/>
 </>)}
