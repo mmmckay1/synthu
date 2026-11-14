@@ -4,6 +4,7 @@ import { noteOff, noteOn, updateVoice, type Voice } from "./audio/voice";
 import { getAudioContext } from "./audio/context";
 import { cutoffToPosition, positionToCutoff } from "./audio/scale";
 import { useEffect } from "react";
+import Knob from "./Knob";
 
 export default function Freeplay(){
     const [patch, setPatch] = useState<Patch>( {...DEFAULT_PATCH, osc1Waveform: "sawtooth", filterType: "lowpass"})
@@ -66,4 +67,5 @@ export default function Freeplay(){
     <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
     <input type="range" min={0} max={1} step={0.001} value={cutoffToPosition(patch.filterCutoff)} onChange={handleCutoff} />
     {Math.round(patch.filterCutoff)} Hz 
+    <Knob label="Cutoff" position={cutoffToPosition(patch.filterCutoff)} display={ `${Math.round(patch.filterCutoff)} Hz`} onChange={(p) => console.log(p)}/>
 </>)}
