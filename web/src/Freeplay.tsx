@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { noteOff, noteOn, updateVoice, type Voice } from "./audio/voice";
 import { getAudioContext } from "./audio/context";
 import { cutoffToPosition, positionToCutoff } from "./audio/scale";
+import { useEffect } from "react";
 
 export default function Freeplay(){
     const [patch, setPatch] = useState<Patch>( {...DEFAULT_PATCH, osc1Waveform: "sawtooth", filterType: "lowpass"})
@@ -35,6 +36,31 @@ export default function Freeplay(){
             updateVoice(getAudioContext(), voiceRef.current, next)
         }
     }
+
+    useEffect(() =>{
+        const onKeyDown = (e: KeyboardEvent) =>{
+            if (e.code !== 'KeyA'){
+                return
+            }
+            if (e.repeat){
+                return
+            }
+            handlePress()
+        }
+
+        const onKeyUp = (e: KeyboardEvent) =>{
+            if (e.code === 'KeyA'){
+                handleRelease()
+            }
+        }
+
+        window.addEventListener('keydown', onKeyDown)
+        window.addEventListener('keyup', onKeyUp)
+        return ()=>{
+            window.removeEventListener('keydown',onKeyDown)
+            window.removeEventListener('keyup', onKeyUp)
+        }
+    } ,[handlePress, handleRelease])
 
     return (<>
     <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
