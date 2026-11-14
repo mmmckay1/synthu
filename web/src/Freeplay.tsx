@@ -1,10 +1,11 @@
 import { DEFAULT_PATCH, type Patch} from "@synthu/shared";
 import { useRef, useState } from "react";
-import { noteOff, noteOn, type Voice } from "./audio/voice";
+import { noteOff, noteOn, updateVoice, type Voice } from "./audio/voice";
 import { getAudioContext } from "./audio/context";
+import { cutoffToPosition, positionToCutoff } from "./audio/scale";
 
 export default function Freeplay(){
-    const [patch, setPatch] = useState<Patch>(DEFAULT_PATCH)
+    const [patch, setPatch] = useState<Patch>( {...DEFAULT_PATCH, osc1Waveform: "sawtooth", filterType: "lowpass"})
     const voiceRef = useRef<Voice | null>(null)
 
     const handlePress = async () => {
@@ -26,5 +27,17 @@ export default function Freeplay(){
         voiceRef.current = null
     }
 
-    return <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
-}
+    const handleCutoff = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        const filterCut = positionToCutoff(e.target.valueAsNumber)
+        const next = {...patch, filterCutoff: filterCut}
+        setPatch(next)
+        if (voiceRef.current){
+            updateVoice(getAudioContext(), voiceRef.current, next)
+        }
+    }
+
+    return (<>
+    <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
+    <input type="range" min={0} max={1} step={0.001} value={cutoffToPosition(patch.filterCutoff)} onChange={handleCutoff} />
+    {Math.round(patch.filterCutoff)} Hz 
+</>)}
