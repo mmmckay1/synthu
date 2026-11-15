@@ -5,3 +5,14 @@ export function getAudioContext(): AudioContext {
     }
     return audioCtx
 }
+
+let masterGain: GainNode | null = null
+export function getMasterGain(): GainNode{
+    if(masterGain=== null){
+        const ctx = getAudioContext()
+        masterGain = ctx.createGain()
+        masterGain.connect(ctx.destination)
+        masterGain.gain.value = 0.5**3
+    }
+    return masterGain
+}

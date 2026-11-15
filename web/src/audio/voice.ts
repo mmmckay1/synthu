@@ -8,6 +8,10 @@ export type Voice = {
     gain2: GainNode
     filter: BiquadFilterNode
     amp: GainNode
+    startTime: number
+    attackSec: number
+    decaySec: number
+    sustain: number
 }
 
 function resonanceToQ(resonance: number, type: FilterType): number{
@@ -22,6 +26,19 @@ function resonanceToQ(resonance: number, type: FilterType): number{
     }
 }
 
+function envelopeLevel(voice: Voice, time: number): number{
+    const elapsed = time - voice.startTime
+    if (elapsed < voice.attackSec){
+        return elapsed/voice.attackSec
+    }
+    const decayElapsed = elapsed -voice.attackSec
+    if (decayElapsed<voice.decaySec){
+        const fraction = decayElapsed/voice.decaySec
+        return 1+(voice.sustain-1)*fraction
+    }
+    return voice.sustain
+}
+
 export function updateVoice(ctx: AudioContext, voice: Voice, patch: Patch): void{
     const now = ctx.currentTime
     const smooth = 0.01
@@ -34,15 +51,23 @@ export function updateVoice(ctx: AudioContext, voice: Voice, patch: Patch): void
     voice.filter.Q.setTargetAtTime(resonanceToQ(patch.filterResonance, patch.filterType), now, smooth)
     voice.filter.frequency.setTargetAtTime(patch.filterCutoff, now, smooth)
 
-    voice.osc1.type = patch.osc1Waveform
-    voice.osc2.type = patch.osc2Waveform
-    voice.filter.type = patch. filterType === "none" ? "allpass": patch.filterType
+    if (voice.osc1.type !== patch.osc1Waveform){
+        voice.osc1.type = patch.osc1Waveform
+    }
+    if (voice.osc2.type !== patch.osc2Waveform){
+        voice.osc2.type = patch.osc2Waveform
+    }
+    const filterType: BiquadFilterType = patch. filterType === "none" ? "allpass": patch.filterType
+    if (voice.filter.type !== filterType){
+        voice.filter.type = filterType
+    }
 }
 
-export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
+export function noteOn(ctx: AudioContext, patch: Patch, freq: number, output: AudioNode): Voice {
     const now = ctx.currentTime
     const attackSec = patch.ampAttack/1000
     const decaySec = patch.ampDecay/1000
+    const sustain = patch.ampSustain
 
     const osc1 = ctx.createOscillator()
     const osc2 = ctx.createOscillator()
@@ -56,8 +81,7 @@ export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
     gain1.connect(filter)
     gain2.connect(filter)
     filter.connect(amp)
-    amp.connect(ctx.destination)
-
+    amp.connect(output)
 
     osc1.type = patch.osc1Waveform
     osc2.type = patch.osc2Waveform
@@ -76,14 +100,14 @@ export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
 
     osc1.start(now)
     osc2.start(now)
-    return { osc1, osc2, gain1, gain2, filter, amp, freq}
+    return { osc1, osc2, gain1, gain2, filter, amp, freq, attackSec, decaySec, sustain, startTime: now}
 }
 
 export function noteOff(ctx: AudioContext, voice: Voice, patch: Patch): void {
     const now = ctx.currentTime
     const releaseSec = patch.ampRelease/1000
     voice.amp.gain.cancelScheduledValues(now)
-    voice.amp.gain.setValueAtTime(voice.amp.gain.value, now)
+    voice.amp.gain.setValueAtTime(envelopeLevel(voice, now), now)
     voice.amp.gain.linearRampToValueAtTime(0, now + releaseSec)
     voice.osc1.stop(now+releaseSec)
     voice.osc2.stop(now+releaseSec)
