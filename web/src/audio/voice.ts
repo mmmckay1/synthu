@@ -34,9 +34,16 @@ export function updateVoice(ctx: AudioContext, voice: Voice, patch: Patch): void
     voice.filter.Q.setTargetAtTime(resonanceToQ(patch.filterResonance, patch.filterType), now, smooth)
     voice.filter.frequency.setTargetAtTime(patch.filterCutoff, now, smooth)
 
-    voice.osc1.type = patch.osc1Waveform
-    voice.osc2.type = patch.osc2Waveform
-    voice.filter.type = patch. filterType === "none" ? "allpass": patch.filterType
+    if (voice.osc1.type !== patch.osc1Waveform){
+        voice.osc1.type = patch.osc1Waveform
+    }
+    if (voice.osc2.type !== patch.osc2Waveform){
+        voice.osc2.type = patch.osc2Waveform
+    }
+    const filterType: BiquadFilterType = patch. filterType === "none" ? "allpass": patch.filterType
+    if (voice.filter.type !== filterType){
+        voice.filter.type = filterType
+    }
 }
 
 export function noteOn(ctx: AudioContext, patch: Patch, freq: number, output: AudioNode): Voice {
