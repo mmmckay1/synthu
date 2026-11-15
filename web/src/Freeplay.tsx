@@ -62,34 +62,60 @@ export default function Freeplay(){
     } ,[handlePress, handleRelease])
 
     return (<>
-    <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
-    {/* <input type="range" min={0} max={1} step={0.001} value={cutoffToPosition(patch.filterCutoff)} onChange={handleCutoff} />
-    {Math.round(patch.filterCutoff)} Hz  */}
-    <Knob label="Master Volume" position={volume} display={`${Math.round(volume*100)} %`} onChange={(p) => {setVolume(p), getMasterGain().gain.setTargetAtTime(p**3, getAudioContext().currentTime, 0.01)}}/>
-    <Knob label="Filter Cutoff" position={logToPosition(patch.filterCutoff, 20, 20000)} display={ `${Math.round(patch.filterCutoff)} Hz`} onChange={(p) => setParameter('filterCutoff', positionToLog(p, 20, 20000))}/>
-    <Knob label="Attack" position={logToPosition(patch.ampAttack, 1, 5000)} display={ `${Math.round(patch.ampAttack)} ms`} onChange={(p) => setParameter('ampAttack', positionToLog(p, 1, 5000))} />
-    <Knob label="Decay" position={logToPosition(patch.ampDecay, 1, 5000)} display={ `${Math.round(patch.ampDecay)} ms`} onChange={(p) => setParameter('ampDecay', positionToLog(p, 1, 5000))}/>
-    <Knob label="Sustain" position={patch.ampSustain} display={ `${Math.round(patch.ampSustain*100)} %`} onChange={(p) => setParameter('ampSustain', p)}/>
-    <Knob label="Release" position={logToPosition(patch.ampRelease, 1, 5000)} display={ `${Math.round(patch.ampRelease)} ms`} onChange={(p) => setParameter('ampRelease', positionToLog(p, 1, 5000))}/>
-    <Knob label="Osc 1 Level" position={patch.osc1Mix} display={ `${Math.round(patch.osc1Mix*100)} %`} onChange={(p) => setParameter('osc1Mix', p)}/>
-    <Knob label="Osc 2 Level" position={patch.osc2Mix} display={ `${Math.round(patch.osc2Mix*100)} %`} onChange={(p) => setParameter('osc2Mix', p)}/>
-    <Knob label="Osc 2 Detune" position={linearToPosition(patch.osc2Detune, -100, 100)} display={ `${Math.round(patch.osc2Detune)} cents`} onChange={(p) => setParameter('osc2Detune', positionToLinear(p, -100, 100))}/>
-    <Knob label="Osc 1 Octave" position={linearToPosition(patch.osc1Octave, -2, 2)} display={`${patch.osc1Octave}`} onChange={(p) => setParameter('osc1Octave', Math.round(positionToLinear(p, -2, 2)))}/>
-    <Knob label="Osc 2 Octave" position={linearToPosition(patch.osc2Octave, -2, 2)} display={`${patch.osc2Octave}`} onChange={(p) => setParameter('osc2Octave', Math.round(positionToLinear(p, -2, 2)))}/>
-    <Knob label="Filter Resonance" position={patch.filterResonance} display={`${Math.round(patch.filterResonance*100)} %`} onChange={(p) => setParameter('filterResonance', p)}/>
-
-    <select value={patch.osc1Waveform} onChange={(e) => setParameter('osc1Waveform', WaveformSchema.parse(e.target.value))}>
-        {WaveformSchema.options.map((w) => (
-            <option key={w} value={w}>{w}</option>))}
-    </select>
-
-    <select value={patch.osc2Waveform} onChange={(e) => setParameter('osc2Waveform', WaveformSchema.parse(e.target.value))}>
-        {WaveformSchema.options.map((w) => (
-            <option key={w} value={w}>{w}</option>))}
-    </select>
-
-    <select value={patch.filterType} onChange={(e) => setParameter('filterType', FilterTypeSchema.parse(e.target.value))}>
+    <div className="panel">
+        <div className="section master">
+            <h1>Master Controls</h1>
+            <div className="row">
+                <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
+                <Knob label="Volume" position={volume} display={`${Math.round(volume*100)} %`} onChange={(p) => {setVolume(p), getMasterGain().gain.setTargetAtTime(p**3, getAudioContext().currentTime, 0.01)}}/>
+            </div>
+        </div> 
+        <div className="section filter">
+            <h1>Filter</h1>
+            <div className="row">
+                <select value={patch.filterType} onChange={(e) => setParameter('filterType', FilterTypeSchema.parse(e.target.value))}>
         {FilterTypeSchema.options.map((w) => (
             <option key={w} value={w}>{w}</option>))}
-    </select>
+                </select>
+                <Knob label="Cutoff" position={logToPosition(patch.filterCutoff, 20, 20000)} display={ `${Math.round(patch.filterCutoff)} Hz`} onChange={(p) => setParameter('filterCutoff', positionToLog(p, 20, 20000))}/>
+                <Knob label="Resonance" position={patch.filterResonance} display={`${Math.round(patch.filterResonance*100)} %`} onChange={(p) => setParameter('filterResonance', p)}/>
+            </div>
+        </div>
+        <div className="section osc1">
+            <h1>Osc 1</h1>
+            <div className="row">
+                <select value={patch.osc1Waveform} onChange={(e) => setParameter('osc1Waveform', WaveformSchema.parse(e.target.value))}>
+                    {WaveformSchema.options.map((w) => (
+                    <option key={w} value={w}>{w}</option>))}
+                </select>
+                <Knob label="Level" position={patch.osc1Mix} display={ `${Math.round(patch.osc1Mix*100)} %`} onChange={(p) => setParameter('osc1Mix', p)}/>
+                <Knob label="Octave" position={linearToPosition(patch.osc1Octave, -2, 2)} display={`${patch.osc1Octave}`} onChange={(p) => setParameter('osc1Octave', Math.round(positionToLinear(p, -2, 2)))}/>
+            </div>
+        </div>
+        <div className="section osc2">
+            <h1>Osc 2</h1>
+            <div className="row">
+                <select value={patch.osc2Waveform} onChange={(e) => setParameter('osc2Waveform', WaveformSchema.parse(e.target.value))}>
+                    {WaveformSchema.options.map((w) => (
+                    <option key={w} value={w}>{w}</option>))}
+                </select>
+                <Knob label="Level" position={patch.osc2Mix} display={ `${Math.round(patch.osc2Mix*100)} %`} onChange={(p) => setParameter('osc2Mix', p)}/>
+                <Knob label="Octave" position={linearToPosition(patch.osc2Octave, -2, 2)} display={`${patch.osc2Octave}`} onChange={(p) => setParameter('osc2Octave', Math.round(positionToLinear(p, -2, 2)))}/>
+                <Knob label="Detune" position={linearToPosition(patch.osc2Detune, -100, 100)} display={ `${Math.round(patch.osc2Detune)} cents`} onChange={(p) => setParameter('osc2Detune', positionToLinear(p, -100, 100))}/>
+            </div>
+        </div>
+        <div className="section amp">
+            <h1>Amp</h1>
+            <div className="row">
+                <Knob label="Attack" position={logToPosition(patch.ampAttack, 1, 5000)} display={ `${Math.round(patch.ampAttack)} ms`} onChange={(p) => setParameter('ampAttack', positionToLog(p, 1, 5000))} />
+                <Knob label="Decay" position={logToPosition(patch.ampDecay, 1, 5000)} display={ `${Math.round(patch.ampDecay)} ms`} onChange={(p) => setParameter('ampDecay', positionToLog(p, 1, 5000))}/>
+                <Knob label="Sustain" position={patch.ampSustain} display={ `${Math.round(patch.ampSustain*100)} %`} onChange={(p) => setParameter('ampSustain', p)}/>
+                <Knob label="Release" position={logToPosition(patch.ampRelease, 1, 5000)} display={ `${Math.round(patch.ampRelease)} ms`} onChange={(p) => setParameter('ampRelease', positionToLog(p, 1, 5000))}/>
+            </div>
+        </div>
+    </div>
+
+
+
+
 </>)}
