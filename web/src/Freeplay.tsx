@@ -9,7 +9,14 @@ import Knob from "./Knob";
 export default function Freeplay(){
     const [patch, setPatch] = useState<Patch>( {...DEFAULT_PATCH, osc1Waveform: "sawtooth", filterType: "lowpass"})
     const voiceRef = useRef<Voice | null>(null)
-
+    
+    const setParameter = <K extends keyof Patch>(key: K, value: Patch[K]) =>{
+        const next = {...patch, [key]: value}
+        setPatch(next)
+        if (voiceRef.current){
+            updateVoice(getAudioContext(), voiceRef.current, next)
+        }
+    }
     const handlePress = async () => {
         const ctx = getAudioContext()
         await ctx.resume()
@@ -30,13 +37,9 @@ export default function Freeplay(){
     }
 
     const handleCutoff = (position: number) =>{
-        const filterCut = positionToCutoff(position)
-        const next = {...patch, filterCutoff: filterCut}
-        setPatch(next)
-        if (voiceRef.current){
-            updateVoice(getAudioContext(), voiceRef.current, next)
-        }
+        setParameter('filterCutoff', positionToCutoff(position))
     }
+    
 
     useEffect(() =>{
         const onKeyDown = (e: KeyboardEvent) =>{
