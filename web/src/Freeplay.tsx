@@ -67,7 +67,7 @@ export default function Freeplay(){
             <h1>Master Controls</h1>
             <div className="row">
                 <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
-                <Knob label="Volume" position={volume} display={`${Math.round(volume*100)} %`} onChange={(p) => {setVolume(p), getMasterGain().gain.setTargetAtTime(p**3, getAudioContext().currentTime, 0.01)}}/>
+                <Knob label="Volume" position={volume} display={`${Math.round(volume*100)} %`} onChange={(p) => {setVolume(p); getMasterGain().gain.setTargetAtTime(p**3, getAudioContext().currentTime, 0.01)}}/>
             </div>
         </div> 
         <div className="section filter">
