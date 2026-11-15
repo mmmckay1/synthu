@@ -1,12 +1,13 @@
 import { DEFAULT_PATCH, FilterTypeSchema, WaveformSchema, type Patch} from "@synthu/shared";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { noteOff, noteOn, updateVoice, type Voice } from "./audio/voice";
-import { getAudioContext } from "./audio/context";
+import { getAudioContext, getMasterGain } from "./audio/context";
 import { linearToPosition, logToPosition, positionToLinear, positionToLog } from "./audio/scale";
 import Knob from "./Knob";
 
 export default function Freeplay(){
     const [patch, setPatch] = useState<Patch>( {...DEFAULT_PATCH, osc1Waveform: "sawtooth", filterType: "lowpass"})
+    const [volume, setVolume] = useState(0.5)
     const voiceRef = useRef<Voice | null>(null)
     
     const setParameter = <K extends keyof Patch>(key: K, value: Patch[K]) =>{
@@ -22,7 +23,7 @@ export default function Freeplay(){
         if (voiceRef.current){
             return
         }
-        voiceRef.current = noteOn(ctx, patch, 220)
+        voiceRef.current = noteOn(ctx, patch, 220, getMasterGain())
     }, [patch])
 
     const handleRelease = useCallback(() => {
@@ -64,6 +65,7 @@ export default function Freeplay(){
     <button onPointerDown={handlePress} onPointerUp={handleRelease} onPointerLeave={handleRelease}>Hold to play clown</button>
     {/* <input type="range" min={0} max={1} step={0.001} value={cutoffToPosition(patch.filterCutoff)} onChange={handleCutoff} />
     {Math.round(patch.filterCutoff)} Hz  */}
+    <Knob label="Master Volume" position={volume} display={`${Math.round(volume*100)} %`} onChange={(p) => {setVolume(p), getMasterGain().gain.setTargetAtTime(p**3, getAudioContext().currentTime, 0.01)}}/>
     <Knob label="Filter Cutoff" position={logToPosition(patch.filterCutoff, 20, 20000)} display={ `${Math.round(patch.filterCutoff)} Hz`} onChange={(p) => setParameter('filterCutoff', positionToLog(p, 20, 20000))}/>
     <Knob label="Attack" position={logToPosition(patch.ampAttack, 1, 5000)} display={ `${Math.round(patch.ampAttack)} ms`} onChange={(p) => setParameter('ampAttack', positionToLog(p, 1, 5000))} />
     <Knob label="Decay" position={logToPosition(patch.ampDecay, 1, 5000)} display={ `${Math.round(patch.ampDecay)} ms`} onChange={(p) => setParameter('ampDecay', positionToLog(p, 1, 5000))}/>

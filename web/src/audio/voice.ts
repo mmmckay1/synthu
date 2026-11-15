@@ -39,7 +39,7 @@ export function updateVoice(ctx: AudioContext, voice: Voice, patch: Patch): void
     voice.filter.type = patch. filterType === "none" ? "allpass": patch.filterType
 }
 
-export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
+export function noteOn(ctx: AudioContext, patch: Patch, freq: number, output: AudioNode): Voice {
     const now = ctx.currentTime
     const attackSec = patch.ampAttack/1000
     const decaySec = patch.ampDecay/1000
@@ -56,8 +56,7 @@ export function noteOn(ctx: AudioContext, patch: Patch, freq: number): Voice {
     gain1.connect(filter)
     gain2.connect(filter)
     filter.connect(amp)
-    amp.connect(ctx.destination)
-
+    amp.connect(output)
 
     osc1.type = patch.osc1Waveform
     osc2.type = patch.osc2Waveform
