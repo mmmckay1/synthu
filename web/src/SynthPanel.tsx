@@ -11,7 +11,7 @@ type Props = {
 export function SynthPanel({ patch, onChange }: Props){
     return (
         <>
-<div className="section filter">
+        <div className="section filter">
             <h1>Filter</h1>
             <div className="row">
                 <select value={patch.filterType} onChange={(e) => onChange('filterType', FilterTypeSchema.parse(e.target.value))}>
