@@ -1,4 +1,4 @@
-import { DEFAULT_PATCH, type Patch} from "@synthu/shared";
+import { DEFAULT_PATCH, FilterTypeSchema, WaveformSchema, type Patch} from "@synthu/shared";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { noteOff, noteOn, updateVoice, type Voice } from "./audio/voice";
 import { getAudioContext } from "./audio/context";
@@ -75,4 +75,19 @@ export default function Freeplay(){
     <Knob label="Osc 1 Octave" position={linearToPosition(patch.osc1Octave, -2, 2)} display={`${patch.osc1Octave}`} onChange={(p) => setParameter('osc1Octave', Math.round(positionToLinear(p, -2, 2)))}/>
     <Knob label="Osc 2 Octave" position={linearToPosition(patch.osc2Octave, -2, 2)} display={`${patch.osc2Octave}`} onChange={(p) => setParameter('osc2Octave', Math.round(positionToLinear(p, -2, 2)))}/>
     <Knob label="Filter Resonance" position={patch.filterResonance} display={`${Math.round(patch.filterResonance*100)} %`} onChange={(p) => setParameter('filterResonance', p)}/>
+
+    <select value={patch.osc1Waveform} onChange={(e) => setParameter('osc1Waveform', WaveformSchema.parse(e.target.value))}>
+        {WaveformSchema.options.map((w) => (
+            <option key={w} value={w}>{w}</option>))}
+    </select>
+
+    <select value={patch.osc2Waveform} onChange={(e) => setParameter('osc2Waveform', WaveformSchema.parse(e.target.value))}>
+        {WaveformSchema.options.map((w) => (
+            <option key={w} value={w}>{w}</option>))}
+    </select>
+
+    <select value={patch.filterType} onChange={(e) => setParameter('filterType', FilterTypeSchema.parse(e.target.value))}>
+        {FilterTypeSchema.options.map((w) => (
+            <option key={w} value={w}>{w}</option>))}
+    </select>
 </>)}
