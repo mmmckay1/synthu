@@ -73,6 +73,7 @@ export default function Freeplay(){
         <SynthPanel patch={patch} onChange={setParameter} />
     </div>
 
+{/* to lock, add unlocked={["thing_to_unlocked", etc]} */}
 
 
 
