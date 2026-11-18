@@ -9,7 +9,7 @@ export default function Freeplay(){
     const [patch, setPatch] = useState<Patch>( {...DEFAULT_PATCH, osc1Waveform: "sawtooth", filterType: "lowpass"})
     const [volume, setVolume] = useState(0.5)
     const voiceRef = useRef<Voice | null>(null)
-    
+
     const setParameter = <K extends keyof Patch>(key: K, value: Patch[K]) =>{
         const next = {...patch, [key]: value}
         setPatch(next)
