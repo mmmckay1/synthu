@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build -w shared && npm run build -w api && npm run build -w web"
+    "build": "npm run build -w shared && npm run build -w api && npm run build -w web",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
   },
   "keywords": [],
   "author": "",
