@@ -1,17 +1,25 @@
 import express from 'express';
-import { DEFAULT_PATCH } from '@synthu/shared';
-const app = express();
+import { env } from "./env.js"
+import { db } from "./db/index.js"
+import { lessons } from "./db/schema.js"
+import { asc } from 'drizzle-orm';
+import cors from "cors"
 
-const port = Number(process.env.PORT || '3000');
+const app = express();
+app.use(cors({ origin: env.CORS_ORIGINS.split(",")}))
+
 app.get('/health', (_req, res): void =>{
     res.json({
         "ok": true,
-        "patch": DEFAULT_PATCH,
     })
 }
 )
 
+app.get("/lessons", async (_req, res) => {
+    const rows = await db.select().from(lessons).orderBy(asc(lessons.chapterId), asc(lessons.number))
+    res.json(rows)
+})
 
-app.listen(port, () =>{
-    console.log(`Server is running on ${port}`)
+app.listen(env.PORT, () =>{
+    console.log(`Server is running on ${env.PORT}`)
 }); 
