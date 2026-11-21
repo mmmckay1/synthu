@@ -47,11 +47,6 @@ app.get("/lessons", async (_req, res) => {
     res.json(rows)
 })
 
-app.get("/me", requireAuth, async (_req, res) => { 
-    await ensureUser(res.locals.userId)
-    res.json({ userId: res.locals.userId})
-})
-
 app.listen(env.PORT, () =>{
     console.log(`Server is running on ${env.PORT}`)
 }); 
