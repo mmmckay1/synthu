@@ -1,14 +1,16 @@
 import { DEFAULT_PATCH, type Patch} from "@synthu/shared";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { noteOff, noteOn, updateVoice, type Voice } from "./audio/voice";
-import { getAudioContext, getMasterGain } from "./audio/context";
+import { getAudioContext, getMasterGain, getSynthBus } from "./audio/context";
 import { SynthPanel } from "./SynthPanel";
 import Knob from "./Knob";
+import Oscilloscope from "./Oscilloscope";
 
 export default function Freeplay(){
     const [patch, setPatch] = useState<Patch>( {...DEFAULT_PATCH, osc1Waveform: "sawtooth", filterType: "lowpass"})
     const [volume, setVolume] = useState(0.5)
     const voiceRef = useRef<Voice | null>(null)
+    const [playing, setPlaying] = useState(false)
 
     const setParameter = <K extends keyof Patch>(key: K, value: Patch[K]) =>{
         const next = {...patch, [key]: value}
@@ -23,7 +25,8 @@ export default function Freeplay(){
         if (voiceRef.current){
             return
         }
-        voiceRef.current = noteOn(ctx, patch, 220, getMasterGain())
+        voiceRef.current = noteOn(ctx, patch, 220, getSynthBus())
+        setPlaying(true)
     }, [patch])
 
     const handleRelease = useCallback(() => {
@@ -34,6 +37,7 @@ export default function Freeplay(){
         }
         noteOff(ctx, voiceRef.current, patch)
         voiceRef.current = null
+        setPlaying(false)
     }, [patch])
 
     useEffect(() =>{
@@ -62,6 +66,7 @@ export default function Freeplay(){
     } ,[handlePress, handleRelease])
 
     return (<>
+    <div className="freeplay">
     <div className="panel">
         <div className="section master">
             <h1>Master Controls</h1>
@@ -71,6 +76,10 @@ export default function Freeplay(){
             </div>
         </div> 
         <SynthPanel patch={patch} onChange={setParameter} />
+    </div>
+    <div className="section scope">
+    <Oscilloscope active={playing}/>
+    </div>
     </div>
 
 {/* to lock, add unlocked={["thing_to_unlocked", etc]} */}

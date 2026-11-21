@@ -16,3 +16,25 @@ export function getMasterGain(): GainNode{
     }
     return masterGain
 }
+
+let synthBus: GainNode | null = null
+export function getSynthBus(): GainNode{
+    if(synthBus===null){
+    const ctx = getAudioContext()
+    synthBus = ctx.createGain()
+    synthBus.connect(getMasterGain())
+    }
+    return synthBus
+}
+
+let analyser: AnalyserNode | null = null
+export function getAnalyser(): AnalyserNode{
+    if(analyser===null){
+        const ctx = getAudioContext()
+        analyser = ctx.createAnalyser()
+        analyser.fftSize = 2048
+        getSynthBus().connect(analyser)
+    }
+    return analyser
+}
+
