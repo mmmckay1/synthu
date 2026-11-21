@@ -27,3 +27,9 @@ export function lessonStartPatch(lesson: Lesson): Patch {
     }
     return start
 }
+
+export type LessonRecord = Lesson & {
+    lessonId: number
+    chapterId: number
+    number: number
+}
