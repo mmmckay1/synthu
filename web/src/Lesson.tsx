@@ -2,7 +2,7 @@ import { lessonStartPatch, type LessonRecord, type Patch, type ScoreResult } fro
 import { useState } from "react"
 import { SynthPanel } from "./SynthPanel"
 import { noteOff, noteOn, type Voice } from "./audio/voice"
-import { getAudioContext, getMasterGain } from "./audio/context"
+import { getAudioContext, getSynthBus } from "./audio/context"
 import { apiFetch } from "./api"
 
 const NOTE_MS = 1000
@@ -16,7 +16,7 @@ const playPatch = async (p: Patch) => {
         clearTimeout(current.timer)
         noteOff(ctx, current.voice, current.patch)
     }
-    const voice = noteOn(ctx, p, 220, getMasterGain())
+    const voice = noteOn(ctx, p, 220, getSynthBus())
     const timer = setTimeout(() => {
         noteOff(ctx, voice, p)
         current = null
