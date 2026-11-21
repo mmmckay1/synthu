@@ -1,7 +1,7 @@
-import { SAMPLE_LESSON } from '@synthu/shared'
+import { type LessonRecord } from '@synthu/shared'
 import Freeplay from './Freeplay.tsx'
 import { Lesson } from './Lesson.tsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from './useSession.ts'
 import { AuthForm } from './AuthForm.tsx'
 import { supabase } from './supabase.ts'
@@ -12,6 +12,18 @@ function App() {
   const session = useSession()
   const authLabel = session === undefined ? "Loading..." : session ? `Logged in as ${session.user.email}`: "Not logged in"
   const [whoami, setWhoami] = useState<string | null>(null)
+  const [ lessons, setLessons ] = useState<LessonRecord[] | null>(null)
+
+  useEffect(() =>{
+    if(session){
+      apiFetch("/lessons").then(r => r.json()).then(setLessons)
+    }
+  }, [session])
+
+  let lessonView
+  if(!session) lessonView = <p>Log in to take lessons</p>
+  else if (!lessons || !lessons[0]) lessonView = <p>Loading lessons....</p>
+  else lessonView = <Lesson lesson={lessons[0]}/>
 
   async function checkWhoami() {
     const res = await apiFetch("/me")
@@ -30,7 +42,7 @@ function App() {
     <button onClick={() => setPage("freeplay")}>Freeplay Synth</button>
     <button onClick={() => setPage("lesson")}>Lessons</button>
       {/* <p>You can do it tootall! -Mama, Froggie, Binky, Minky</p> */}
-      {page === "freeplay" ? <Freeplay /> : <Lesson lesson={SAMPLE_LESSON} />}
+      {page === "freeplay" ? <Freeplay /> : lessonView }
     </>
   )
 }
