@@ -13,7 +13,9 @@ export const CHAPTER_1_LESSONS: (Lesson & {number: number})[] = [{
         introText: "This is a sample intro text.  FIll THIS IN LATER",
         targetPatch: {...DEFAULT_PATCH, osc1Waveform: "sine"},
         unlockedParameters: ["osc1Waveform"],
-        explanation: "this is the explanation"},
+        explanation: "this is the explanation",
+        startPatch: { osc1Waveform: "square"}
+    }  , 
         {
     number: 2,
         title: "Square wave",
