@@ -22,7 +22,8 @@ export const lessons = pgTable("lessons", {
     title: text("title").notNull(),
     introText: text("intro_text").notNull(),
     explanation: text("explanation").notNull(),
-    number: integer("number").notNull()
+    number: integer("number").notNull(),
+    startPatch: jsonb("start_patch").$type<Partial<Patch>>()
 }, (t) => [unique().on(t.chapterId, t.number)])
 
 export const attempts = pgTable("attempts", {

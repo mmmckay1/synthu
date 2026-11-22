@@ -1,0 +1,1 @@
+ALTER TABLE "lessons" ADD COLUMN "start_patch" jsonb;
