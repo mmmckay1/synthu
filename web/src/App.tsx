@@ -6,9 +6,9 @@ import { useSession } from './useSession.ts'
 import { AuthForm } from './AuthForm.tsx'
 import { supabase } from './supabase.ts'
 import { apiFetch } from './api.ts'
+import { Routes, Route, Link } from 'react-router'
 
 function App() {
-  const [page, setPage] = useState<"freeplay" | "lesson">("freeplay")
   const session = useSession()
   const authLabel = session === undefined ? "Loading..." : session ? `Logged in as ${session.user.email}`: "Not logged in"
   const [ lessons, setLessons ] = useState<LessonRecord[] | null>(null)
@@ -29,10 +29,13 @@ function App() {
     <p>{authLabel}</p>
     { session === null && <AuthForm/>}
     { session && <button onClick={() => void supabase.auth.signOut()}>Log out</button>}
-    <button onClick={() => setPage("freeplay")}>Freeplay Synth</button>
-    <button onClick={() => setPage("lesson")}>Lessons</button>
+    <Link to="/">Freeplay</Link>
+    <Link to="/courses">Lessons</Link>
       {/* <p>You can do it tootall! -Mama, Froggie, Binky, Minky</p> */}
-      {page === "freeplay" ? <Freeplay /> : lessonView }
+      <Routes>
+        <Route path="/" element= {<Freeplay/>} />
+        <Route path="/courses" element={lessonView} />
+      </Routes>
     </>
   )
 }
