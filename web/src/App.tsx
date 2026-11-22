@@ -8,6 +8,7 @@ import { supabase } from './supabase.ts'
 import { apiFetch } from './api.ts'
 import { Routes, Route } from 'react-router'
 import { Header } from './Header.tsx'
+import { About } from './About.tsx'
 
 function App() {
   const session = useSession()
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element= {<Freeplay/>} />
         <Route path="/courses" element={lessonView} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </>
   )
