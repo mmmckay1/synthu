@@ -6,7 +6,8 @@ import { useSession } from './useSession.ts'
 import { AuthForm } from './AuthForm.tsx'
 import { supabase } from './supabase.ts'
 import { apiFetch } from './api.ts'
-import { Routes, Route, Link } from 'react-router'
+import { Routes, Route } from 'react-router'
+import { Header } from './Header.tsx'
 
 function App() {
   const session = useSession()
@@ -26,12 +27,10 @@ function App() {
 
   return (
     <>
+    <Header />
     <p>{authLabel}</p>
     { session === null && <AuthForm/>}
     { session && <button onClick={() => void supabase.auth.signOut()}>Log out</button>}
-    <Link to="/">Freeplay</Link>
-    <Link to="/courses">Lessons</Link>
-      {/* <p>You can do it tootall! -Mama, Froggie, Binky, Minky</p> */}
       <Routes>
         <Route path="/" element= {<Freeplay/>} />
         <Route path="/courses" element={lessonView} />
