@@ -108,7 +108,7 @@ export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLes
         )
         }
         {done && <p>{lesson.explanation}</p>}
-        {done && (nextLessonId !== null ? <Link to={`/courses/${nextLessonId}`}>Next Lesson</Link> : <Link to="/courses">Back to all lessons</Link>)}
+        {done && (nextLessonId !== null ? <Link to={`/courses/${lesson.chapterId}/${nextLessonId}`}>Next Lesson</Link> : <Link to="/courses">Back to Chapters</Link>)}
     </>
     )
 }

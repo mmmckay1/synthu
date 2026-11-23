@@ -28,7 +28,7 @@ export type LessonRecord = Lesson & {
 }
 
 export type ChapterRecord = {
-    chapterId: string
+    chapterId: number
     number: number
     title: string
     introText: string

@@ -9,7 +9,7 @@ import { useParams, Link } from 'react-router'
 
 
 export function Learn() {
-  const { lessonId } = useParams()
+  const { lessonId, chapterId } = useParams()
   const session = useSession()
   const authLabel = session === undefined ? "Loading..." : session ? `Logged in as ${session.user.email}`: "Not logged in"
   const [ lessons, setLessons ] = useState<LessonRecord[] | null>(null)
@@ -30,7 +30,7 @@ export function Learn() {
 
     }
   }, [session])
-  
+
   let lessonView
   
   if(!session) {
@@ -39,15 +39,37 @@ export function Learn() {
   else if (!lessons || !chapters || !completed) {
     lessonView = <p>Loading lessons....</p>
   }
-  else if (!lessonId){
-    lessonView = 
+  else if (!chapterId){
+    lessonView = ( <>
+    <h1>fill</h1>
+    <p>fill</p>
     <ul>
-        {lessons.map(l => (
+      {chapters.map(c => (
+        <li key={c.chapterId}>
+          <Link to={ `/courses/${c.chapterId}`}>Chapter {c.number}: {c.title}</Link>
+        </li>
+      ))}
+    </ul>
+    </>
+    )
+  }
+  else if (!lessonId){
+    const chapter = chapters.find(c => c.chapterId === Number(chapterId))
+    const chapterLessons = lessons.filter(l => l.chapterId === Number(chapterId))
+    lessonView = chapter ? 
+    (<>
+      <h2>{chapter.title}</h2>
+      <p>{chapter.introText}</p>
+    <ul>
+        {chapterLessons.map(l => (
             <li key={l.lessonId}>
-                <Link to={ `/courses/${l.lessonId}`}>{l.title}</Link>
+                <Link to={ `/courses/${chapter.chapterId}/${l.lessonId}`}>{l.title}</Link>
             </li>
         ))}
     </ul>
+    </>
+    )
+   : <p>Chapter not found</p>
   }
   else {
     const index = lessons.findIndex(l => l.lessonId ===Number(lessonId))

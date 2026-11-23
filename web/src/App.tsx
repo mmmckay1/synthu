@@ -13,7 +13,9 @@ function App() {
         <Route path="/" element= {<Freeplay/>} />
         <Route path="/courses" element={<Learn />} />
         <Route path="/about" element={<About />} />
-        <Route path="/courses/:lessonId" element={<Learn />}/>
+        <Route></Route>
+        <Route path="/courses/:chapterId" element={<Learn />} />
+        <Route path="/courses/:chapterId/:lessonId" element={<Learn />}/>
       </Routes>
     </>
   )
