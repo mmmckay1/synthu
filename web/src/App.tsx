@@ -9,11 +9,11 @@ function App() {
   return (
     <>
     <Header />
-
       <Routes>
         <Route path="/" element= {<Freeplay/>} />
         <Route path="/courses" element={<Learn />} />
         <Route path="/about" element={<About />} />
+        <Route path="/courses/:lessonId" element={<Learn />}/>
       </Routes>
     </>
   )
