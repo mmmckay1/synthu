@@ -41,8 +41,8 @@ export function Learn() {
   }
   else if (!chapterId){
     lessonView = ( <>
-    <h1>fill</h1>
-    <p>fill</p>
+    <h1>Learn</h1>
+    <p>Pick a chapter to get started</p>
     <ul>
       {chapters.map(c => (
         <li key={c.chapterId}>
