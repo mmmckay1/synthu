@@ -26,3 +26,10 @@ export type LessonRecord = Lesson & {
     chapterId: number
     number: number
 }
+
+export type ChapterRecord = {
+    chapterId: number
+    number: number
+    title: string
+    introText: string
+}

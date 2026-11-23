@@ -1,13 +1,14 @@
 import express from 'express';
 import { env } from "./env.js"
 import { db } from "./db/index.js"
-import { attempts, lessons } from "./db/schema.js"
-import { asc, eq } from 'drizzle-orm';
+import { attempts, lessons, chapters } from "./db/schema.js"
+import { asc, eq, and, or } from 'drizzle-orm';
 import cors from "cors"
 import { requireAuth } from './auth.js';
 import { ensureUser } from './user.js';
 import { PatchSchema, scorePatch } from '@synthu/shared';
 import { z } from "zod"
+
 
 const app = express();
 app.use(cors({ origin: env.CORS_ORIGINS.split(",")}))
@@ -45,6 +46,17 @@ app.get('/health', (_req, res): void =>{
 app.get("/lessons", async (_req, res) => {
     const rows = await db.select().from(lessons).orderBy(asc(lessons.chapterId), asc(lessons.number))
     res.json(rows)
+})
+
+app.get("/chapters", async (_req, res) => {
+    const rows = await db.select().from(chapters).orderBy(asc(chapters.number))
+    res.json(rows)
+})
+
+app.get("/completed", requireAuth, async (_req, res) =>{
+        const userId = res.locals.userId
+        const rows = await db.selectDistinct({ lessonId: attempts.lessonId }).from(attempts).where(and(eq(attempts.userId, userId), or(eq(attempts.passed, true),eq(attempts.gaveUp, true))))
+        res.json(rows.map(r => r.lessonId))
 })
 
 app.listen(env.PORT, () =>{

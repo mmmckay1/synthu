@@ -4,6 +4,7 @@ import { SynthPanel } from "./SynthPanel"
 import { noteOff, noteOn, type Voice } from "./audio/voice"
 import { getAudioContext, getSynthBus } from "./audio/context"
 import { apiFetch } from "./api"
+import { Link } from "react-router"
 
 const NOTE_MS = 1000
 const GIVE_UP_AFTER = 4
@@ -25,7 +26,7 @@ const playPatch = async (p: Patch) => {
 
 }
 
-export function Lesson({ lesson }: { lesson: LessonRecord }) {
+export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLessonId: number | null }) {
     const [patch, setPatch] = useState<Patch>(() => lessonStartPatch(lesson))
     const [attempts, setAttempts] = useState(0)
     const [result, setResult] = useState<ScoreResult | null>(null)
@@ -107,6 +108,7 @@ export function Lesson({ lesson }: { lesson: LessonRecord }) {
         )
         }
         {done && <p>{lesson.explanation}</p>}
+        {done && (nextLessonId !== null ? <Link to={`/courses/${lesson.chapterId}/${nextLessonId}`}>Next Lesson</Link> : <Link to="/courses">Back to Chapters</Link>)}
     </>
     )
 }
