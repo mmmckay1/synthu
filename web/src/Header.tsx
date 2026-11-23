@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router";
 export function Header (){
     return <header>
         <Link to="/">
-        <span>Synth U</span>
+        <span className="site-title">SynthU</span>
         </Link>
         <nav>
             <NavLink to="/" end>SynthDude</NavLink>

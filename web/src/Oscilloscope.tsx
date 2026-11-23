@@ -61,7 +61,7 @@ export default function Oscilloscope( { active }: { active: boolean }){
 function drawGrid(g: CanvasRenderingContext2D){
         g.fillStyle = "#0a140d"
         g.fillRect(0, 0, WIDTH, HEIGHT)
-        g.strokeStyle = "rgba(90, 255, 150, 0.12)"
+        g.strokeStyle = "rgba(255, 246, 229, 0.15)"
         g.lineWidth = 1
         for (let i = 1; i < 10; i++){
             const x = Math.round((WIDTH/10)* i) + 0.5
@@ -80,7 +80,7 @@ function drawGrid(g: CanvasRenderingContext2D){
 }
 
 function drawTrace(g: CanvasRenderingContext2D, data: Float32Array, start: number){
-    g.strokeStyle = "#5aff96"
+    g.strokeStyle = "#FED348"
     g.lineWidth = 2
     g.beginPath()
     for (let i = 0; i < COUNT; i++){
