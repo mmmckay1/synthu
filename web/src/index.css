@@ -1,12 +1,20 @@
 :root {
+  --cherry: #AD204A;
+  --orange: #FF9B45;
+  --teal: #00A0B8;
+  --red: #DD2330;
+  --yellow: #FED348;
+  --ink: #1B110F;
+  --cream: #FFF6E5;
+  --bg: var(--teal);
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 18px/145% var(--sans);
+  font: 18px/1.45 var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: blanchedalmond;
+  color-scheme: light;
+  color: var(--ink);
   background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,12 +36,105 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 12px;
-  border: 1px solid #888
+  padding: 16px;
+  border: 3px solid var(--ink);
+  background-color: var(--cream);
+  border-radius: 16px;
 }
 
 .freeplay{
   display: flex;
   gap: 1rem;
-  align-items: flex-start;
+  padding: 2rem;
+  background-color: var(--orange);
+  border: 3px solid var(--ink);
+  border-radius: 24px;
+  margin: 2rem;
+  width: fit-content;
+}
+
+.site-title{
+  font-family: "Rubik Glitch", sans-serif;
+  font-size: 2.5rem;
+  color: var(--cherry);
+}
+
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--cream);
+  padding: 0.75rem 2rem;
+  border-bottom: 4px solid var(--cherry);
+}
+
+header a {
+  text-decoration: none;
+}
+
+nav{
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  padding-bottom: 4px;
+}
+
+nav a.active{
+  border-bottom-color: var(--cherry)
+}
+
+nav a:hover{
+  color: var(--cherry);
+}
+
+.side{
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nameplate{
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  font-family: "Rubik Glitch", sans-serif;
+  font-size: 4rem;
+  color: var(--cherry);
+  line-height: 1;
+  text-align: center;
+}
+
+.nameplate h2{
+  margin: 0;
+}
+
+.moe{
+  font-size: 2rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+.knob-face{
+  fill: var(--ink);
+}
+
+.knob-pointer{
+  stroke: var(--cream)
+}
+
+.knob-face.highlight{
+  stroke: var(--yellow);
+  stroke-width: 6;
+}
+
+.knob{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }

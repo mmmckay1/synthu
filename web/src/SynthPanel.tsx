@@ -15,7 +15,7 @@ export function SynthPanel({ patch, onChange, unlocked }: Props){
     return (
         <>
         <div className="section filter">
-            <h1>Filter</h1>
+            <h2>Filter</h2>
             <div className="row">
                 <select disabled={isLocked('filterType')} style={{ outline: isHighlighted('filterType') ? "3px solid #e8a33d" : undefined }} value={patch.filterType} onChange={(e) => onChange('filterType', FilterTypeSchema.parse(e.target.value))}>
         {FilterTypeSchema.options.map((w) => (
@@ -26,7 +26,7 @@ export function SynthPanel({ patch, onChange, unlocked }: Props){
             </div>
         </div>
         <div className="section osc1">
-            <h1>Osc 1</h1>
+            <h2>Osc 1</h2>
             <div className="row">
                 <select disabled={isLocked('osc1Waveform')} style={{ outline: isHighlighted('osc1Waveform') ? "3px solid #e8a33d" : undefined }}value={patch.osc1Waveform} onChange={(e) => onChange('osc1Waveform', WaveformSchema.parse(e.target.value))}>
                     {WaveformSchema.options.map((w) => (
@@ -37,7 +37,7 @@ export function SynthPanel({ patch, onChange, unlocked }: Props){
             </div>
         </div>
         <div className="section osc2">
-            <h1>Osc 2</h1>
+            <h2>Osc 2</h2>
             <div className="row">
                 <select disabled={isLocked('osc2Waveform')} style={{ outline: isHighlighted('osc2Waveform') ? "3px solid #e8a33d" : undefined }} value={patch.osc2Waveform} onChange={(e) => onChange('osc2Waveform', WaveformSchema.parse(e.target.value))}>
                     {WaveformSchema.options.map((w) => (
@@ -49,7 +49,7 @@ export function SynthPanel({ patch, onChange, unlocked }: Props){
             </div>
         </div>
         <div className="section amp">
-            <h1>Amp</h1>
+            <h2>Amp</h2>
             <div className="row">
                 <Knob label="Attack" locked={isLocked('ampAttack')} highlight={isHighlighted('ampAttack')}position={logToPosition(patch.ampAttack, 1, 5000)} display={ `${Math.round(patch.ampAttack)} ms`} onChange={(p) => onChange('ampAttack', positionToLog(p, 1, 5000))} />
                 <Knob label="Decay" locked={isLocked('ampDecay')} highlight={isHighlighted('ampDecay')}position={logToPosition(patch.ampDecay, 1, 5000)} display={ `${Math.round(patch.ampDecay)} ms`} onChange={(p) => onChange('ampDecay', positionToLog(p, 1, 5000))}/>
