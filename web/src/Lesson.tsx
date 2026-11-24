@@ -26,15 +26,15 @@ const playPatch = async (p: Patch) => {
 
 }
 
-export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLessonId: number | null }) {
-    const [patch, setPatch] = useState<Patch>(() => lessonStartPatch(lesson))
+export function Lesson({ lesson, nextLessonId, onComplete, alreadyCompleted}: { lesson: LessonRecord, nextLessonId: number | null, onComplete: () => void, alreadyCompleted: boolean }) {
+    const [patch, setPatch] = useState<Patch>(() => alreadyCompleted ? lesson.targetPatch : lessonStartPatch(lesson))
     const [attempts, setAttempts] = useState(0)
     const [result, setResult] = useState<ScoreResult | null>(null)
     const [gaveUp, setGaveUp] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [saving, setSaving] = useState(false)
 
-    const done = result?.passed === true || gaveUp
+    const done = result?.passed === true || gaveUp || alreadyCompleted
 
     const setParameter = <K extends keyof Patch>(key: K, value: Patch[K]) => {
         const next = { ...patch, [key]: value }
@@ -57,6 +57,7 @@ export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLes
             const score: ScoreResult = await res.json()
             setResult(score)
             if (score.passed) {
+                onComplete()
                 setPatch(lesson.targetPatch)
             }
             setAttempts(a => a + 1)
@@ -79,6 +80,7 @@ export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLes
                 return
             }
             setGaveUp(true)
+            onComplete()
             setPatch(lesson.targetPatch)
         }
         catch { setError("Couldn't reach the server, check your connection and try again.") }
@@ -92,7 +94,7 @@ export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLes
         <div className="row">
             <button onClick={() => playPatch(lesson.targetPatch)}>Play Target</button>
             <button onClick={() => playPatch(patch)}>Play my patch</button>
-            <button onClick={() => void handleSubmit()} disabled={done || saving} >Submit</button>
+            { !alreadyCompleted && <button onClick={() => void handleSubmit()} disabled={done || saving} >Submit</button> }
             {attempts >= GIVE_UP_AFTER && !done && <button onClick={() => void handleGiveUp()} disabled={saving}>Give Up?  </button>}
         </div>
         <div className="synth-body">

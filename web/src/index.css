@@ -141,3 +141,7 @@ nav a:hover{
 .page{
   padding: 2rem
 }
+
+.locked{
+  cursor: not-allowed;
+}
