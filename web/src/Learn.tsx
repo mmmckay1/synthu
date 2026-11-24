@@ -7,6 +7,10 @@ import { AuthForm } from './AuthForm.tsx'
 import { supabase } from './supabase.ts'
 import { useParams, Link } from 'react-router'
 
+function isUnlocked(lessons: LessonRecord[], completed: number[], lesson: LessonRecord){
+  const prev = lessons[lessons.indexOf(lesson) -1]
+  return !prev || completed.includes(prev.lessonId)
+}
 
 export function Learn() {
   const { lessonId, chapterId } = useParams()
@@ -63,7 +67,8 @@ export function Learn() {
     <ul>
         {chapterLessons.map(l => (
             <li key={l.lessonId}>
-                <Link to={ `/courses/${chapter.chapterId}/${l.lessonId}`}>{l.title}</Link>
+                {isUnlocked(lessons, completed, l) ? <Link to={ `/courses/${chapter.chapterId}/${l.lessonId}`}>{l.title}</Link> : <span className='locked'>{l.title}</span>}
+              {completed.includes(l.lessonId) && " ✓"}
             </li>
         ))}
     </ul>
@@ -76,8 +81,16 @@ export function Learn() {
     const found = lessons[index]
     const next = lessons[index+1]
     const nextLessonId = found && next && (next.chapterId ===found.chapterId) ? next.lessonId : null
-    lessonView = found ? (<Lesson lesson={found} key={found.lessonId} nextLessonId={nextLessonId}/>) : <p>Lesson not found</p>
+    if (!found){
+     lessonView = <p>Lesson not found</p>
+    }
+    else if (!isUnlocked(lessons, completed, found)){
+      lessonView = <p>Finish the previous lesson first!</p>
+    }
+    else{
+    lessonView = <Lesson lesson={found} key={found.lessonId} nextLessonId={nextLessonId} onComplete={()=> setCompleted(c => c ? [...c, found.lessonId] : c)}/> 
   }
+}
 
     return<>
     <div className='page'>

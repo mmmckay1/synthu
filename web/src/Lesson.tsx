@@ -26,7 +26,7 @@ const playPatch = async (p: Patch) => {
 
 }
 
-export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLessonId: number | null }) {
+export function Lesson({ lesson, nextLessonId, onComplete}: { lesson: LessonRecord, nextLessonId: number | null, onComplete: () => void }) {
     const [patch, setPatch] = useState<Patch>(() => lessonStartPatch(lesson))
     const [attempts, setAttempts] = useState(0)
     const [result, setResult] = useState<ScoreResult | null>(null)
@@ -57,6 +57,7 @@ export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLes
             const score: ScoreResult = await res.json()
             setResult(score)
             if (score.passed) {
+                onComplete()
                 setPatch(lesson.targetPatch)
             }
             setAttempts(a => a + 1)
@@ -79,6 +80,7 @@ export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLes
                 return
             }
             setGaveUp(true)
+            onComplete()
             setPatch(lesson.targetPatch)
         }
         catch { setError("Couldn't reach the server, check your connection and try again.") }
