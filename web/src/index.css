@@ -145,3 +145,22 @@ nav a:hover{
 .locked{
   cursor: not-allowed;
 }
+
+.back-link{
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.learn-home{
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media(max-width: 800px) {
+  .learn-home{
+    grid-template-columns: 1fr;
+  }
+}
