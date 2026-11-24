@@ -88,6 +88,7 @@ export function Lesson({ lesson, nextLessonId, onComplete, alreadyCompleted}: { 
     }
 
     return (<>
+        <Link className="back-link" to={`/courses/${lesson.chapterId}`}>Back to Chapter</Link>
         <h1>{lesson.title}</h1>
         <p>{lesson.introText}</p>
         {error && <p>{error}</p>}

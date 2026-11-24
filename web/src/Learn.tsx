@@ -44,17 +44,22 @@ export function Learn() {
     lessonView = <p>Loading lessons....</p>
   }
   else if (!chapterId){
-    lessonView = ( <>
-    <h1>Learn</h1>
-    <p>Pick a chapter to get started</p>
-    <ul>
+    lessonView = ( <div className='learn-home'>
+      < div className='section intro'>
+      <h1>Introduction to Synthesis</h1>
+      <p>Insert text here</p>
+      </div>
+      <div className='section'>
+    <h2>Chapters</h2>
+    <ol>
       {chapters.map(c => (
         <li key={c.chapterId}>
-          <Link to={ `/courses/${c.chapterId}`}>Chapter {c.number}: {c.title}</Link>
+          <Link to={ `/courses/${c.chapterId}`}>{c.title}</Link>
         </li>
       ))}
-    </ul>
-    </>
+    </ol>
+    </div>
+    </div>
     )
   }
   else if (!lessonId){
@@ -62,16 +67,19 @@ export function Learn() {
     const chapterLessons = lessons.filter(l => l.chapterId === Number(chapterId))
     lessonView = chapter ? 
     (<>
+      <Link className="back-link" to="/courses">Back to Learning Home</Link>
+      <div className='section'>
       <h2>{chapter.title}</h2>
       <p>{chapter.introText}</p>
-    <ul>
+    <ol>
         {chapterLessons.map(l => (
             <li key={l.lessonId}>
                 {isUnlocked(lessons, completed, l) ? <Link to={ `/courses/${chapter.chapterId}/${l.lessonId}`}>{l.title}</Link> : <span className='locked'>{l.title}</span>}
               {completed.includes(l.lessonId) && " ✓"}
             </li>
         ))}
-    </ul>
+    </ol>
+    </div>
     </>
     )
    : <p>Chapter not found</p>
