@@ -66,7 +66,8 @@ export default function Freeplay(){
     } ,[handlePress, handleRelease])
 
     return (<>
-    <div className="freeplay">
+    <div className="page">
+    <div className="synth-body">
     <div className="panel">
         <div className="section master">
             <h2>Volume</h2>
@@ -90,6 +91,6 @@ export default function Freeplay(){
 
 {/* to lock, add unlocked={["thing_to_unlocked", etc]} */}
 
-
+</div>
 
 </>)}

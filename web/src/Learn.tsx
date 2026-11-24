@@ -80,9 +80,11 @@ export function Learn() {
   }
 
     return<>
+    <div className='page'>
     <p>{authLabel}</p>
     { session === null && <AuthForm/>}
     { session && <button onClick={() => void supabase.auth.signOut()}>Log out</button>}
     {lessonView}
+    </div>
     </>
 }
