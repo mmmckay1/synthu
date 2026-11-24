@@ -36,7 +36,7 @@ export default function Knob ({ label, position, display, onChange, locked, high
         return(
             <div className="knob" style={{opacity: locked? 0.4 : 1}}>
                 <svg width={56} height={56} viewBox="0 0 100 100" onPointerUp={handlePointerUp} onPointerMove={handlePointerMove} onPointerDown={handlePointerDown} style={{ touchAction: "none", cursor: locked? "not-allowed" : "ns-resize"}}>
-                    <circle cx={50} cy={50} r={40}className={highlight ? "knob-face hightlight" : "knob-face"}/>
+                    <circle cx={50} cy={50} r={40}className={highlight ? "knob-face highlight" : "knob-face"}/>
                     <line x1={50} y1={50} x2={50} y2={14}  strokeWidth={6} strokeLinecap="round" transform={`rotate(${angle} 50 50)`} className="knob-pointer"/>
                 </svg>
                 <div>{label}</div>

@@ -95,8 +95,10 @@ export function Lesson({ lesson, nextLessonId }: { lesson: LessonRecord, nextLes
             <button onClick={() => void handleSubmit()} disabled={done || saving} >Submit</button>
             {attempts >= GIVE_UP_AFTER && !done && <button onClick={() => void handleGiveUp()} disabled={saving}>Give Up?  </button>}
         </div>
+        <div className="synth-body">
         <div className="panel">
             <SynthPanel patch={patch} onChange={setParameter} unlocked={done ? [] : lesson.unlockedParameters} />
+        </div>
         </div>
         {result && (
             <div>

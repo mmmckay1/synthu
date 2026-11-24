@@ -42,14 +42,13 @@ body {
   border-radius: 16px;
 }
 
-.freeplay{
+.synth-body{
   display: flex;
   gap: 1rem;
   padding: 2rem;
   background-color: var(--orange);
   border: 3px solid var(--ink);
   border-radius: 24px;
-  margin: 2rem;
   width: fit-content;
 }
 
@@ -137,4 +136,8 @@ nav a:hover{
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+.page{
+  padding: 2rem
 }
