@@ -28,8 +28,13 @@ export function Profile(){
 
     return(
         <div className="page">
-            {session === null && <AuthForm/>}
-            {session && (<>
+
+            {session === null && (
+                            <div className="section">
+                <AuthForm/>
+            </div>)}
+            {session && (
+                <div className="section">
                 <h1>Profile</h1>
                 <p>{session.user.email}</p>
                 {lessons && chapters && completed && (<>
@@ -45,8 +50,9 @@ export function Profile(){
                     </ul>
                 </>)}
                 <button onClick={() => void supabase.auth.signOut()}>Log out</button>
-                </>
-            )}
+                  </div>)}
+      
         </div>
     )
+    
 }
