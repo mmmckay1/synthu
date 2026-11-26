@@ -3,8 +3,6 @@ import { Lesson } from './Lesson.tsx'
 import { useEffect, useState } from 'react'
 import { useSession } from './useSession.ts'
 import type { ChapterRecord, LessonRecord } from '@synthu/shared'
-import { AuthForm } from './AuthForm.tsx'
-import { supabase } from './supabase.ts'
 import { useParams, Link } from 'react-router'
 
 function isUnlocked(lessons: LessonRecord[], completed: number[], lesson: LessonRecord){
@@ -15,7 +13,6 @@ function isUnlocked(lessons: LessonRecord[], completed: number[], lesson: Lesson
 export function Learn() {
   const { lessonId, chapterId } = useParams()
   const session = useSession()
-  const authLabel = session === undefined ? "Loading..." : session ? `Logged in as ${session.user.email}`: "Not logged in"
   const [ lessons, setLessons ] = useState<LessonRecord[] | null>(null)
   const [ chapters, setChapters ] = useState<ChapterRecord[] | null>(null)
   const [ completed, setCompleted ] = useState<number[] | null>(null)
@@ -36,9 +33,13 @@ export function Learn() {
   }, [session])
 
   let lessonView
+
+  if(session === undefined){
+    lessonView = <p>Loading...</p>
+  }
   
-  if(!session) {
-    lessonView = <p>Log in to take lessons</p>
+  else if(!session) {
+    lessonView = <p><Link to="/profile">Log in</Link> to take lessons</p>
   }
   else if (!lessons || !chapters || !completed) {
     lessonView = <p>Loading lessons....</p>
@@ -100,12 +101,7 @@ export function Learn() {
   }
 }
 
-    return<>
-    <div className='page'>
-    <p>{authLabel}</p>
-    { session === null && <AuthForm/>}
-    { session && <button onClick={() => void supabase.auth.signOut()}>Log out</button>}
+    return <div className='page'>
     {lessonView}
     </div>
-    </>
 }

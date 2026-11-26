@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router'
 import { Header } from './Header.tsx'
 import { About } from './About.tsx'
 import { Learn } from './Learn.tsx'
+import { Profile } from './Profile.tsx'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/courses/:chapterId" element={<Learn />} />
         <Route path="/courses/:chapterId/:lessonId" element={<Learn />}/>
+        <Route path="/profile" element={<Profile />}/>
       </Routes>
     </>
   )

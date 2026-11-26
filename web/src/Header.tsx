@@ -9,6 +9,7 @@ export function Header (){
             <NavLink to="/" end>SynthDude</NavLink>
             <NavLink to="/courses">Learn</NavLink>
             <NavLink to="/about">About</NavLink>
+            <NavLink to="/profile">Profile</NavLink>
         </nav>
     </header>
 }
