@@ -26,7 +26,7 @@ const playPatch = async (p: Patch) => {
 
 }
 
-export function Lesson({ lesson, nextLessonId, onComplete, alreadyCompleted}: { lesson: LessonRecord, nextLessonId: number | null, onComplete: () => void, alreadyCompleted: boolean }) {
+export function Lesson({ lesson, nextLessonId, onComplete, alreadyCompleted, chapterTitle}: { lesson: LessonRecord, nextLessonId: number | null, onComplete: () => void, alreadyCompleted: boolean, chapterTitle: string}) {
     const [patch, setPatch] = useState<Patch>(() => alreadyCompleted ? lesson.targetPatch : lessonStartPatch(lesson))
     const [attempts, setAttempts] = useState(0)
     const [result, setResult] = useState<ScoreResult | null>(null)
@@ -40,6 +40,8 @@ export function Lesson({ lesson, nextLessonId, onComplete, alreadyCompleted}: { 
         const next = { ...patch, [key]: value }
         setPatch(next)
     }
+
+
 
     const handleSubmit = async () => {
         setError(null)
@@ -89,7 +91,7 @@ export function Lesson({ lesson, nextLessonId, onComplete, alreadyCompleted}: { 
 
     return (<>
         <Link className="back-link" to={`/courses/${lesson.chapterId}`}>Back to Chapter</Link>
-        <h1>{lesson.title}</h1>
+        <h1>{chapterTitle}: Lesson {lesson.number}</h1>
         <p>{lesson.introText}</p>
         {error && <p>{error}</p>}
         <div className="row">

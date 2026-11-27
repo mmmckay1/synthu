@@ -97,7 +97,7 @@ export function Learn() {
       lessonView = <p>Finish the previous lesson first!</p>
     }
     else{
-    lessonView = <Lesson lesson={found} key={found.lessonId} nextLessonId={nextLessonId} onComplete={()=> setCompleted(c => c ? [...c, found.lessonId] : c)} alreadyCompleted={completed.includes(found.lessonId)}/> 
+    lessonView = <Lesson lesson={found} key={found.lessonId} nextLessonId={nextLessonId} chapterTitle={chapters.find(c => c.chapterId === found.chapterId)?.title ?? ""} onComplete={()=> setCompleted(c => c ? [...c, found.lessonId] : c)} alreadyCompleted={completed.includes(found.lessonId)}/> 
   }
 }
 
