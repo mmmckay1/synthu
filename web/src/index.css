@@ -26,13 +26,13 @@ body {
   margin: 0;
 }
 
-.panel{
+.panel {
   display: flex;
   flex-wrap: wrap;
-  gap:24px
+  gap: 24px
 }
 
-.section{
+.section {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -42,7 +42,7 @@ body {
   border-radius: 16px;
 }
 
-.synth-body{
+.synth-body {
   display: flex;
   gap: 1rem;
   padding: 2rem;
@@ -52,13 +52,13 @@ body {
   width: fit-content;
 }
 
-.site-title{
+.site-title {
   font-family: "Rubik Glitch", sans-serif;
   font-size: 2.5rem;
   color: var(--cherry);
 }
 
-header{
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -71,7 +71,7 @@ header a {
   text-decoration: none;
 }
 
-nav{
+nav {
   display: flex;
   gap: 1.5rem;
 }
@@ -83,21 +83,21 @@ nav a {
   padding-bottom: 4px;
 }
 
-nav a.active{
+nav a.active {
   border-bottom-color: var(--cherry)
 }
 
-nav a:hover{
+nav a:hover {
   color: var(--cherry);
 }
 
-.side{
+.side {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-.nameplate{
+.nameplate {
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -108,51 +108,51 @@ nav a:hover{
   text-align: center;
 }
 
-.nameplate h2{
+.nameplate h2 {
   margin: 0;
 }
 
-.moe{
+.moe {
   font-size: 2rem;
   color: var(--ink);
   margin: 0;
 }
 
-.knob-face{
+.knob-face {
   fill: var(--ink);
 }
 
-.knob-pointer{
+.knob-pointer {
   stroke: var(--cream)
 }
 
-.knob-face.highlight{
+.knob-face.highlight {
   stroke: var(--yellow);
   stroke-width: 6;
 }
 
-.knob{
+.knob {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.page{
+.page {
   padding: 2rem
 }
 
-.locked{
+.locked {
   cursor: not-allowed;
 }
 
-.back-link{
+.back-link {
   color: var(--ink);
   font-weight: 600;
   text-decoration: none;
 }
 
-.learn-home{
+.learn-home {
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: 2rem;
@@ -160,7 +160,25 @@ nav a:hover{
 }
 
 @media(max-width: 800px) {
-  .learn-home{
+  .learn-home {
     grid-template-columns: 1fr;
   }
+  .about{
+    grid-template-columns: 1fr;
+  }
+}
+
+.about h1 {
+  margin: 0;
+  grid-column: 1 / -1;
+}
+
+.section h2:first-child {
+  margin-top: 0;
+}
+
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
