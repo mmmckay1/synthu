@@ -5,25 +5,25 @@ import { useSession } from './useSession.ts'
 import type { ChapterRecord, LessonRecord } from '@synthu/shared'
 import { useParams, Link } from 'react-router'
 
-function isUnlocked(lessons: LessonRecord[], completed: number[], lesson: LessonRecord){
-  const prev = lessons[lessons.indexOf(lesson) -1]
+function isUnlocked(lessons: LessonRecord[], completed: number[], lesson: LessonRecord) {
+  const prev = lessons[lessons.indexOf(lesson) - 1]
   return !prev || completed.includes(prev.lessonId)
 }
 
 export function Learn() {
   const { lessonId, chapterId } = useParams()
   const session = useSession()
-  const [ lessons, setLessons ] = useState<LessonRecord[] | null>(null)
-  const [ chapters, setChapters ] = useState<ChapterRecord[] | null>(null)
-  const [ completed, setCompleted ] = useState<number[] | null>(null)
+  const [lessons, setLessons] = useState<LessonRecord[] | null>(null)
+  const [chapters, setChapters] = useState<ChapterRecord[] | null>(null)
+  const [completed, setCompleted] = useState<number[] | null>(null)
 
-  useEffect(() =>{
-    if(session){
+  useEffect(() => {
+    if (session) {
       Promise.all([
-      apiFetch("/lessons").then(r => r.json()),
-            apiFetch("/chapters").then(r => r.json()),
-                  apiFetch("/completed").then(r => r.json())
-      ]).then(([l, c, done ]) => {
+        apiFetch("/lessons").then(r => r.json()),
+        apiFetch("/chapters").then(r => r.json()),
+        apiFetch("/completed").then(r => r.json())
+      ]).then(([l, c, done]) => {
         setLessons(l)
         setChapters(c)
         setCompleted(done)
@@ -34,74 +34,74 @@ export function Learn() {
 
   let lessonView
 
-  if(session === undefined){
+  if (session === undefined) {
     lessonView = <p>Loading...</p>
   }
-  
-  else if(!session) {
+
+  else if (!session) {
     lessonView = <p><Link to="/profile">Log in</Link> to take lessons</p>
   }
   else if (!lessons || !chapters || !completed) {
     lessonView = <p>Loading lessons....</p>
   }
-  else if (!chapterId){
-    lessonView = ( <div className='learn-home'>
+  else if (!chapterId) {
+    lessonView = (<div className='learn-home'>
       < div className='section intro'>
-      <h1>Introduction to Synthesis</h1>
-      <p>Insert text here</p>
+        <h1>Introduction to Synthesis</h1>
+        <p>Insert text here</p>
       </div>
       <div className='section'>
-    <h2>Chapters</h2>
-    <ol>
-      {chapters.map(c => (
-        <li key={c.chapterId}>
-          <Link to={ `/courses/${c.chapterId}`}>{c.title}</Link>
-        </li>
-      ))}
-    </ol>
-    </div>
+        <h2>Chapters</h2>
+        <ol>
+          {chapters.map(c => (
+            <li key={c.chapterId}>
+              <Link to={`/courses/${c.chapterId}`}>{c.title}</Link>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
     )
   }
-  else if (!lessonId){
+  else if (!lessonId) {
     const chapter = chapters.find(c => c.chapterId === Number(chapterId))
     const chapterLessons = lessons.filter(l => l.chapterId === Number(chapterId))
-    lessonView = chapter ? 
-    (<>
-      <Link className="back-link" to="/courses">Back to Learning Home</Link>
-      <div className='section'>
-      <h2>{chapter.title}</h2>
-      <p>{chapter.introText}</p>
-    <ol>
-        {chapterLessons.map(l => (
-            <li key={l.lessonId}>
-                {isUnlocked(lessons, completed, l) ? <Link to={ `/courses/${chapter.chapterId}/${l.lessonId}`}>{l.title}</Link> : <span className='locked'>{l.title}</span>}
-              {completed.includes(l.lessonId) && " ✓"}
-            </li>
-        ))}
-    </ol>
-    </div>
-    </>
-    )
-   : <p>Chapter not found</p>
+    lessonView = chapter ?
+      (<>
+        <Link className="back-link" to="/courses">Back to Learning Home</Link>
+        <div className='section'>
+          <h2>{chapter.title}</h2>
+          <p>{chapter.introText}</p>
+          <ol>
+            {chapterLessons.map(l => (
+              <li key={l.lessonId}>
+                {isUnlocked(lessons, completed, l) ? <Link to={`/courses/${chapter.chapterId}/${l.lessonId}`}>{l.title}</Link> : <span className='locked'>{l.title}</span>}
+                {completed.includes(l.lessonId) && " ✓"}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </>
+      )
+      : <p>Chapter not found</p>
   }
   else {
-    const index = lessons.findIndex(l => l.lessonId ===Number(lessonId))
+    const index = lessons.findIndex(l => l.lessonId === Number(lessonId))
     const found = lessons[index]
-    const next = lessons[index+1]
-    const nextLessonId = found && next && (next.chapterId ===found.chapterId) ? next.lessonId : null
-    if (!found){
-     lessonView = <p>Lesson not found</p>
+    const next = lessons[index + 1]
+    const nextLessonId = found && next && (next.chapterId === found.chapterId) ? next.lessonId : null
+    if (!found) {
+      lessonView = <p>Lesson not found</p>
     }
-    else if (!isUnlocked(lessons, completed, found)){
+    else if (!isUnlocked(lessons, completed, found)) {
       lessonView = <p>Finish the previous lesson first!</p>
     }
-    else{
-    lessonView = <Lesson lesson={found} key={found.lessonId} nextLessonId={nextLessonId} chapterTitle={chapters.find(c => c.chapterId === found.chapterId)?.title ?? ""} onComplete={()=> setCompleted(c => c ? [...c, found.lessonId] : c)} alreadyCompleted={completed.includes(found.lessonId)}/> 
+    else {
+      lessonView = <Lesson lesson={found} key={found.lessonId} nextLessonId={nextLessonId} chapterTitle={chapters.find(c => c.chapterId === found.chapterId)?.title ?? ""} onComplete={() => setCompleted(c => c ? [...c, found.lessonId] : c)} alreadyCompleted={completed.includes(found.lessonId)} />
+    }
   }
-}
 
-    return <div className='page'>
+  return <div className='page'>
     {lessonView}
-    </div>
+  </div>
 }
